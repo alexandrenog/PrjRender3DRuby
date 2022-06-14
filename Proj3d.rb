@@ -184,7 +184,7 @@ class Objeto
 	    2.times{|k|
 	    (linhas+1).times{|i|
 	    (colunas+1).times{|j|
-			plataforma.pontos<< Point::add(posicao,
+			plataforma.pontos << Point::add(posicao,
 						      	Point.new(dimensao*(j*2-1),
 						       			  dimensao*(i*2-1),
 						        		  dimensao*((k%2==0)?(-1):(1))))
@@ -210,7 +210,7 @@ class Objeto
 	       			  dimensao*(((i/2)%2==0)?(-1):(1)),
 	        		 -dimensao))
 	    }
-	    piramide.pontos<<Point::add(posicao,Point.new(0,0,dimensao))
+	    piramide.pontos << Point::add(posicao,Point.new(0,0,dimensao))
 	    piramide.faces=[[0,1,4],[1,3,4],[3,2,4],[2,0,4],[0,1,3,2]].map{|e| {pontos: e}}
 	    return piramide
 	end
@@ -226,12 +226,12 @@ class Objeto
 	       			  dimensao*(((i/2)%2==0)?(-1):(1)),
 	        		  dimensao*(((i/4)%2==0)?(-1):(1))))
 	    }
-	    cruzado.pontos<<Point::add(posicao,Point.new(0,0,dimensao))<<Point::add(posicao,Point.new(0,0,-dimensao))
+	    cruzado.pontos << Point::add(posicao,Point.new(0,0,dimensao)) << Point::add(posicao,Point.new(0,0,-dimensao))
 	    cruzado.faces=[]
-	    cruzado.faces<<{pontos: [4,8,9,0],textura: 0}
-	    cruzado.faces<<{pontos: [8,7,3,9],textura: 1}
-	    cruzado.faces<<{pontos: [5,8,9,1],textura: 0}
-	    cruzado.faces<<{pontos: [8,6,2,9],textura: 1}
+	    cruzado.faces << {pontos: [4,8,9,0],textura: 0}
+	    cruzado.faces << {pontos: [8,7,3,9],textura: 1}
+	    cruzado.faces << {pontos: [5,8,9,1],textura: 0}
+	    cruzado.faces << {pontos: [8,6,2,9],textura: 1}
 	    return cruzado
 	end
 end
@@ -252,11 +252,11 @@ class ProjWindow < Gosu::Window
     @ncage_texture=Gosu::Image.new(self, 'ncage.bmp')
     @cane_texture=Gosu::Image.new(self, 'cane.bmp')
     l=20
-    @objetos<<Objeto.plataforma(Point.new(-l/2,-l/2,0), 0.5, l, l, @rock_texture)
+    @objetos << Objeto.plataforma(Point.new(-l/2,-l/2,0), 0.5, l, l, @rock_texture)
     l.times do |i|
     	l.times do |j|
 	    	if rand(9)==0
-		    	@objetos<<Objeto.cruzado(Point.new(i-l/2,j-l/2,1), 0.5, @ncage_texture)
+		    	@objetos << Objeto.cruzado(Point.new(i-l/2,j-l/2,1), 0.5, @ncage_texture)
 		    end
     	end
     end
@@ -296,7 +296,7 @@ class ProjWindow < Gosu::Window
 		    z=face[:pontos].map{|idx| obj.pontos[idx]}.map{|e| Point.sub(e,@cam.optic_center).normal}.reduce(&:+)/face[:pontos].size
 		    check=@cam.projection_plane.check(obj.pontos[face[:pontos][0]])
 		    if true #z_surfaces.include?(check)
-			    z_surfaces<<check
+			    z_surfaces << check
 			    not_back = face[:pontos].map{|idx| obj.pontos[idx]}.inject(true){|acc,el|
 			     	acc &&  @cam.projection_plane.check(el)>0 #(Point.multVetScalar(Point.sub(el,@cam.optic_center),Point.sub(@camPos,@cam.optic_center))>0)
 			    }
@@ -317,7 +317,7 @@ class ProjWindow < Gosu::Window
 			    else
 			  		triangulos=[face[:pontos][0..2]]
 			  		if face[:pontos].size == 4
-			  			triangulos<<([face[:pontos][2..3],face[:pontos][0]].flatten)
+			  			triangulos << ([face[:pontos][2..3],face[:pontos][0]].flatten)
 			  		end
 				    triangulos.each{|tri|
 				    	aux1,aux2,aux3=tri.map{|idx| objeto2d[idx]}.map{|e| Point.mult(e,width/(@cam.sizex))}
